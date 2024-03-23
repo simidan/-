@@ -1,0 +1,11 @@
+用户表gender：男-0，女-1；
+用户表status：禁用-0，可用-1；
+
+管理员权限role： superAdmin；userAdmin；productAdmin；businessAdmin; orderAdmin
+管理员status：0-禁用；1-待审核；2-可用；
+
+商家管理status：0-禁用；1-待审核；2-可用
+
+订单表status: 订单状态，采用枚举类型，包括 'pending'（待处理）、'paid'（已支付）、'shipped'（已发货）、'completed'（已完成）、'cancelled'（已取消）。
+订单表payment_method: 支付方式，采用枚举类型，包括 'credit_card'、'alipay'、'wechat'、'paypal' 等。
+订单表payment_status: 支付状态，采用枚举类型，包括 'unpaid'（未支付）、'success'（支付成功）、'failed'（支付失败）等。
