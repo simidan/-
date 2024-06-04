@@ -4,9 +4,8 @@ const router = express.Router();
 const verToken = require('../../../utils/verifyToken')
 const dateO = require('../../../utils/dateOptimization')
 
-router.get('/productShow', verToken, async(req, res) => {
+router.get('/productShow', async(req, res) => {
     try {
-        const productId = req.query.productId
 
         const limit = parseInt(req.query.limit) || 10;
         let page = parseInt(req.query.page) || 1;

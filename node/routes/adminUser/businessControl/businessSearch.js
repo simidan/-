@@ -48,11 +48,7 @@ router.get('/businessSearch', verToken, limiter(60, 5), async(req, res) => {
         }
 
         const offset = (page - 1) * limit;
-        // 在数据库中查询商家信息
         const result = await sqlConn('SELECT * FROM business WHERE business_name = ? LIMIT ?, ?', [searchKey, offset, limit]);
-
-        // const result = await sqlConn('SELECT * FROM business WHERE business_name LIKE ? OR business_id LIKE ? OR phone LIKE ? OR email LIKE ?', [`%${searchKey}%`, `%${searchKey}%`, `%${searchKey}%`, `%${searchKey}%`]);
-
 
         result.forEach(element => {
             element.created_at = dateO(element.created_at);

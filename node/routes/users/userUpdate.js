@@ -10,13 +10,14 @@ router.put('/userUpdate', verToken, limiter(60, 5), async(req, res) => {
     try {
         // 在数据库中查找并更新用户信息
         const result = await sqlConn(
-            'UPDATE users SET username = ?, phone = ?, email = ?, full_name = ?, gender = ?, birthday = ?, updated_at = CURRENT_TIMESTAMP() WHERE user_id = ?', [
+            'UPDATE users SET username = ?, phone = ?, email = ?, full_name = ?, gender = ?, birthday = ?, default_address = ?, updated_at = CURRENT_TIMESTAMP() WHERE user_id = ?', [
                 updatedUser.username,
                 updatedUser.phone,
                 updatedUser.email,
                 updatedUser.full_name,
                 updatedUser.gender,
                 updatedUser.birthday,
+                updatedUser.default_address,
                 updatedUser.userId
             ]
         );

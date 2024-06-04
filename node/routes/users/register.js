@@ -25,7 +25,7 @@ router.post('/register', async(req, res) => {
         }
 
         // 检查用户名或手机的唯一性
-        const checkUserSql = 'SELECT * FROM users WHERE username = ? OR email = ? LIMIT 1';
+        const checkUserSql = 'SELECT * FROM users WHERE username = ? OR phone = ? LIMIT 1';
         const userExists = await sqlConn(checkUserSql, [username, phone]);
         if (userExists.length > 0) {
             return res.status(409).json({

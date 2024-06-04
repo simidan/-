@@ -2,6 +2,7 @@ const express = require('express');
 const { sqlConn } = require('../../../database/index');
 const router = express.Router();
 const verToken = require('../../../utils/verifyToken');
+const dateO = require('../../../utils/dateOptimization')
 
 // 根据 user_id 查询订单接口
 router.get('/orderGet', verToken, async(req, res) => {
@@ -18,11 +19,9 @@ router.get('/orderGet', verToken, async(req, res) => {
     }
 
     try {
-        // 获取总数据量
         const totalResults = await sqlConn('SELECT COUNT(*) AS total FROM orders WHERE user_id = ?', [userId]);
         const total = totalResults[0].total;
         if (total === 0) {
-            // 如果总数据量为0，则直接返回空数据列表，无需进一步查询
             return res.json({
                 status: "success",
                 statusCode: 200,
@@ -38,7 +37,6 @@ router.get('/orderGet', verToken, async(req, res) => {
 
         const totalPages = Math.ceil(total / limit);
 
-        // 如果请求的页码小于1或超出了总页数
         if (page < 1 || page > totalPages) {
             return res.status(400).json({
                 status: "error",
@@ -46,22 +44,34 @@ router.get('/orderGet', verToken, async(req, res) => {
             });
         }
 
-        // 从数据库中查询订单数据
         const offset = (page - 1) * limit;
-        const orderQuery = 'SELECT * FROM orders WHERE user_id = ? LIMIT ?, ?';
+        const orderQuery = `
+            SELECT o.*, p.name AS product_name, p.image AS product_image
+            FROM orders o
+            JOIN products p ON o.product_id = p.product_id
+            WHERE o.user_id = ?
+            LIMIT ?, ?`;
         const orderResult = await sqlConn(orderQuery, [userId, offset, limit]);
 
-        // 返回所有找到的订单以及分页信息
+        orderResult.forEach(element => {
+            element.created_at = dateO(element.created_at);
+            element.updated_at = dateO(element.updated_at);
+            let relativePath = element.product_image.replace(/\\/g, "/"); // 替换反斜杠为正斜杠
+            element.product_image = `http://localhost:9000${relativePath}`; // 使用正确的路径
+        });
+
         res.json({
             status: "success",
             statusCode: 200,
             message: "订单查询成功",
-            data: {
-                orders: orderResult,
-                currentPage: page,
-                totalPages: totalPages,
-                totalOrders: total
+            data: orderResult,
+            pagination: {
+                total: total,
+                page: page,
+                limit: limit,
+                totalPages: totalPages
             }
+
         });
     } catch (error) {
         console.error(error);

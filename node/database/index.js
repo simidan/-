@@ -8,24 +8,6 @@ const db_config = {
     database: "goodagriculturalproductsmall"
 }
 
-// let sqlConnTemp = (sql, params) => {
-//     return new Promise((resolve, reject) => {
-//         let conn = mysql.createConnection(db_config);
-//         conn.connect(err => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 conn.query(sql, params, (err, data, fields) => {
-//                     err ? reject(err) : resolve(data);
-//                 });
-//             }
-//             conn.end(err => {
-//                 if (err) throw err;
-//             });
-//         });
-//     });
-// };
-
 let sqlConn = (sql, params) => {
     return new Promise((resolve, reject) => {
         const pool = mysql.createPool(db_config);

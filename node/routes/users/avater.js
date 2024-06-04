@@ -32,7 +32,7 @@ router.post('/avatarUpdate/:id', (req, res, next) => {
     next();
 }, verToken, limiter(60, 5), upload.single('file'), async(req, res) => {
     const userId = req.params.id;
-    const file = req.file; // 获取上传的头像文件
+    const file = req.file;
 
     if (!file) {
         return res.status(400).json({

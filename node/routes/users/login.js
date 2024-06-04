@@ -16,7 +16,7 @@ router.post('/login', async(req, res) => {
         const results = await sqlConn(sql, params);
         if (results.length > 0) {
             const user = results[0];
-            const match = await bcrypt.compare(password, user.password_hash); // 修正了这里
+            const match = await bcrypt.compare(password, user.password_hash);
             if (match) {
                 if (user.status === 1) {
                     user.birthday = new Date(user.birthday).toISOString().split('T')[0];
@@ -25,25 +25,25 @@ router.post('/login', async(req, res) => {
                     user.avatar = `http://localhost:9000${avatarResult}`
 
                     const userInfo = {
-                        userId: user.user_id,
-                        userName: user.username,
-                        userPhone: user.phone,
-                        userEmail: user.email,
-                        userFull_name: user.full_name,
-                        userAvatar: user.avatar,
-                        userGender: user.gender,
-                        userBirthday: user.birthday,
-                        userDefaultAddress: user.default_address
+                        user_id: user.user_id,
+                        username: user.username,
+                        phone: user.phone,
+                        email: user.email,
+                        full_name: user.full_name,
+                        avatar: user.avatar,
+                        ender: user.gender,
+                        birthday: user.birthday,
+                        defaultAddress: user.default_address
                     };
 
-                    const token = jwt.sign({ userId: user.user_id }, secretKey, { expiresIn: '3d' }); // 改为只在 token 中包含 userId
+                    const token = jwt.sign({ userId: user.user_id }, secretKey, { expiresIn: '3d' });
 
                     res.json({
                         status: "success",
                         statusCode: 200,
                         data: {
                             token,
-                            userMessage: userInfo // 这里可以直接使用 userInfo
+                            userMessage: userInfo
                         }
                     });
                 } else {

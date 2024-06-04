@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const addCart = require('./addCart')
+const updateCart = require('./updateCart')
 const getCart = require('./getCart')
 const manageCart = require('./manageCart')
 
-router.use('', addCart)
+router.use('', updateCart)
 router.use('', getCart)
 router.use('', manageCart)
 
