@@ -126,7 +126,7 @@ const uploadAvatar = async () => {
   try{
     const res = await avatarStore.avatar(userInfo.value.user_id,formData)
     if(res.statusCode === 200){
-      let fullPath = "http://localhost:9000" + res.filePath.replace(/\\/g, "/");
+      let fullPath = "http://47.121.143.136:9000" + res.filePath.replace(/\\/g, "/");
       userInfo.value.avatar = fullPath
       console.log(fullPath);
       
